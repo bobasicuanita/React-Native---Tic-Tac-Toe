@@ -1,21 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import GameScreen from './src/screens/GameScreen';
+import StatisticsScreen from './src/screens/StatisticsScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
+import { Provider as StatsProvider } from './src/context/StatsContext';
+import { Provider as SettingsProvider } from './src/context/SettingsContext';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const bottomTabNavigator = createBottomTabNavigator({
+  Game: GameScreen,
+  Statistics: StatisticsScreen,
+  Settings: SettingsScreen
+},{
+  tabBarOptions:{
+    showIcon: true,
+    activeTintColor: '#fff',
+    inactiveTintColor: '#000',
+    tabStyle:{
+      paddingVertical: 5
+    },
+    style: {
+      backgroundColor: '#2193b0',
+    }
+  }
 });
+
+const App =  createAppContainer(bottomTabNavigator);
+
+export default () => {
+  return <StatsProvider>
+      <SettingsProvider>
+          <App />
+      </SettingsProvider>
+    </StatsProvider>
+};
